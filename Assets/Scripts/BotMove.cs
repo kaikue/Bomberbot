@@ -7,8 +7,10 @@ public class BotMove : MonoBehaviour
     public GameObject sprite;
     public GameObject wheel;
     public GameObject cannon;
+    public GameObject bombPrefab;
     public float speed;
     public float startBoost;
+    public float bombSpeed;
 
     private const float WHEEL_SPEED = 5;
     private const float SPIN_SPEED = 3;
@@ -29,10 +31,15 @@ public class BotMove : MonoBehaviour
 
     private void Update()
     {
-        //TODO point cannon toward mouse
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 cannonPos = new Vector2(cannon.transform.position.x, cannon.transform.position.y);
+        Vector2 bombDir = (mousePos - cannonPos).normalized;
+        cannon.transform.rotation = Quaternion.FromToRotation(Vector3.right, bombDir);
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            print("Fire!");
+            GameObject bomb = Instantiate(bombPrefab, cannon.transform.position, Quaternion.identity);
+            Rigidbody2D bombRB = bomb.GetComponent<Rigidbody2D>();
+            bombRB.AddForce(bombDir * bombSpeed, ForceMode2D.Impulse);
         }
         if (Input.GetAxisRaw("Horizontal") < 0 && !leftPressed)
         {
@@ -71,14 +78,11 @@ public class BotMove : MonoBehaviour
         float xInput = Input.GetAxisRaw("Horizontal");
         float xVel = xInput * speed;
         wheel.transform.Rotate(Vector3.forward, -xVel * WHEEL_SPEED);
-        //float yVel = Mathf.Max(rb.velocity.y + GRAVITY_ACCEL * Time.fixedDeltaTime, MAX_FALL_SPEED);
-        //float yVel = rb.velocity.y;
         Vector2 velocity = new Vector2(xVel, 0);
         if (!outtaControl)
         {
             rb.AddForce(velocity, ForceMode2D.Force);
         }
-        //rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
 
         if (startLeft)
         {
@@ -111,8 +115,7 @@ public class BotMove : MonoBehaviour
         Landmine landmine = collision.gameObject.GetComponent<Landmine>();
         if (landmine != null)
         {
-            Transform basePos = landmine.basePos;
-            Vector2 dir = (transform.position - basePos.position).normalized;
+            Vector2 dir = (transform.position - landmine.transform.position).normalized;
             rb.velocity = new Vector2(0, 0);
             rb.AddForce(dir * landmine.ExplodePower, ForceMode2D.Impulse);
             landmine.Explode();
