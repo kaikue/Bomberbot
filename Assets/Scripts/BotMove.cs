@@ -8,14 +8,19 @@ public class BotMove : MonoBehaviour
     public GameObject wheel;
     public GameObject cannon;
     public GameObject bombPrefab;
+    public CameraShake cameraShake;
     public float speed;
     public float startBoost;
     public float bombSpeed;
+    public AudioClip bonkSound;
+    public AudioClip shootSound;
 
     private const float WHEEL_SPEED = 5;
     private const float SPIN_SPEED = 3;
+    private const float SPIN_FIX_TIME = 1;
 
     private Rigidbody2D rb;
+    private AudioSource audioSrc;
     private bool leftPressed = false;
     private bool rightPressed = false;
     private bool startLeft = false;
@@ -23,10 +28,13 @@ public class BotMove : MonoBehaviour
     private bool stopLeft = false;
     private bool stopRight = false;
     private bool outtaControl = false;
+    private bool stoppingSpin = false;
+    private Coroutine crtStopSpin;
 
     private void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
+        audioSrc = gameObject.GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -40,6 +48,7 @@ public class BotMove : MonoBehaviour
             GameObject bomb = Instantiate(bombPrefab, cannon.transform.position, Quaternion.identity);
             Rigidbody2D bombRB = bomb.GetComponent<Rigidbody2D>();
             bombRB.AddForce(bombDir * bombSpeed, ForceMode2D.Impulse);
+            audioSrc.PlayOneShot(shootSound);
         }
         if (Input.GetAxisRaw("Horizontal") < 0 && !leftPressed)
         {
@@ -120,12 +129,44 @@ public class BotMove : MonoBehaviour
             rb.AddForce(dir * landmine.ExplodePower, ForceMode2D.Impulse);
             landmine.Explode();
             outtaControl = true;
+            cameraShake.Shake();
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        audioSrc.PlayOneShot(bonkSound);
+        RegainControl();
+    }
+
+    private void RegainControl()
+	{
         outtaControl = false;
         sprite.transform.rotation = Quaternion.identity;
+	}
+
+	private void OnCollisionStay2D(Collision2D collision)
+	{
+		if (outtaControl && !stoppingSpin)
+		{
+            stoppingSpin = true;
+            crtStopSpin = StartCoroutine(StopSpin());
+		}
+	}
+
+    private IEnumerator StopSpin()
+	{
+        yield return new WaitForSeconds(SPIN_FIX_TIME);
+        stoppingSpin = false;
+        RegainControl();
     }
+
+	private void OnCollisionExit2D(Collision2D collision)
+	{
+		if (stoppingSpin)
+		{
+            StopCoroutine(crtStopSpin);
+            stoppingSpin = false;
+		}
+	}
 }

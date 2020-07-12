@@ -2,20 +2,25 @@
 
 ## TODO
 
-- If zero y velocity for a while, regain control (caused by bounce while staying against edge)
-- Multiple chain explosions increase speed?
-- Target cursor
-- Explode enemies
-- Shooting a landmine explodes it?
+- Exploding tiles
+	- player gets exploded when colliding with explosion not landmine
 - Levels
-	- Bounce onto platform
-	- Bounce around corner
-	- Bounce up corridor
-- Screen shake
-- Particles
+	- Bounce around corner section
+	- moving platforms?
+		- big spinning gears
+- Nicer looking tiles (edges only)
+- Decorations
+	- animated pistons
+	- spinning gears
+	- belts
+- Start screen
+- Target cursor?
+- Shooting a landmine explodes it?
 - SFX
-	- move
-	- explode
-	- shoot bomb
-	- bomb attach
-	- robot hit wall
+	- move?
+
+## Credits
+
+- Programming, art by Kai Kuehner
+- Sound effects made using SFXR: https://www.drpetter.se/project_sfxr.html
+- Music: Among Machines by Snabisch https://opengameart.org/content/among-machines
