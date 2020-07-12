@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3429821367669744323}
   - component: {fileID: 3429821367669744324}
   - component: {fileID: -862213010148711797}
+  - component: {fileID: 1678480650885078039}
   m_Layer: 0
   m_Name: landmine
   m_TagString: Untagged
@@ -72,7 +73,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c414647597c61824cbdfd74eb2792ec3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExplodePower: 12
   explosionPrefab: {fileID: 5989417521504005839, guid: f791ac36e1343ab4ba9848418eaa7b57,
     type: 3}
 --- !u!82 &-862213010148711797
@@ -171,6 +171,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!50 &1678480650885078039
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3429821367669744320}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!1 &3429821367937508220
 GameObject:
   m_ObjectHideFlags: 0

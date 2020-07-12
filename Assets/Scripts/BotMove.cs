@@ -35,6 +35,7 @@ public class BotMove : MonoBehaviour
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         audioSrc = gameObject.GetComponent<AudioSource>();
+        GameObject.FindGameObjectWithTag("timer").GetComponent<Timer>().StartTimer();
     }
 
     private void Update()
@@ -124,13 +125,28 @@ public class BotMove : MonoBehaviour
         Landmine landmine = collision.gameObject.GetComponent<Landmine>();
         if (landmine != null)
         {
-            Vector2 dir = (transform.position - landmine.transform.position).normalized;
-            rb.velocity = new Vector2(0, 0);
-            rb.AddForce(dir * landmine.ExplodePower, ForceMode2D.Impulse);
             landmine.Explode();
+        }
+
+        Explosion explosion = collision.gameObject.GetComponent<Explosion>();
+        if (explosion != null)
+		{
+            explosion.DisableCollision();
+            Vector2 dir = (transform.position - explosion.transform.position).normalized;
+            rb.velocity = new Vector2(0, 0);
+            rb.AddForce(dir * explosion.explodePower, ForceMode2D.Impulse);
             outtaControl = true;
             cameraShake.Shake();
         }
+
+        Ending ending = collision.gameObject.GetComponent<Ending>();
+        if (ending != null)
+		{
+            RegainControl();
+            rb.velocity = Vector2.zero;
+            ending.End();
+            Destroy(this);
+		}
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

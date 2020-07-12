@@ -2,25 +2,19 @@
 
 ## TODO
 
-- Exploding tiles
-	- player gets exploded when colliding with explosion not landmine
+- More decorations
+	- pistons?
+	- belts?
 - Levels
-	- Bounce around corner section
 	- moving platforms?
 		- big spinning gears
-- Nicer looking tiles (edges only)
-- Decorations
-	- animated pistons
-	- spinning gears
-	- belts
-- Start screen
 - Target cursor?
-- Shooting a landmine explodes it?
-- SFX
-	- move?
+- move SFX?
+- ending sound?
 
 ## Credits
 
-- Programming, art by Kai Kuehner
+- Programming and art by Kai Kuehner
 - Sound effects made using SFXR: https://www.drpetter.se/project_sfxr.html
 - Music: Among Machines by Snabisch https://opengameart.org/content/among-machines
+- Font: Kenney Pixel by Kenney https://fontstruct.com/fontstructions/show/503556/kenney-pixel-1
